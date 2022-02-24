@@ -14,7 +14,11 @@ setuptools.setup(
     long_description_content_type='text/markdown',
     setup_requires=['wheel'],
     install_requires=[
-    	'numpy >= 1.16.1'
+    	'numpy >= 1.16.1',
+        'sympy',
+        'scikit-learn',
+        'gym',
+        'pygame',
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
