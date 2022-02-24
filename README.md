@@ -6,6 +6,8 @@
 </figcaption>
 </figure>
 
+## In brief
+
 `genepro` is a Python library providing a baseline implementation of genetic programming, an evolutionary algorithm specialized to evolve programs.
 This library includes a classifier and regressor that are compatible with scitik-learn (see **examples of usage** below).
 
@@ -17,7 +19,7 @@ Genetic programming operates on a population of trees, typically initialized at 
 Every iteration (called *generation*), promising trees undergo random modifications (e.g., forms of *crossover*, *mutation*, and *tuning*) that result in a population of offspring trees.
 This new population is then used for the next generation.
 
-#
+
 
 ## Installation
 ### Minimal installation
@@ -37,7 +39,7 @@ conda activate genepro
 pip install .
 ```
 
-#
+
 
 ## Examples of usage
 
