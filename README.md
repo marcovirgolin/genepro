@@ -6,6 +6,8 @@
 </figcaption>
 </figure>
 
+[![DOI](https://zenodo.org/badge/463139106.svg)](https://zenodo.org/badge/latestdoi/463139106)
+
 ## In brief
 
 `genepro` is a Python library providing a baseline implementation of genetic programming, an evolutionary algorithm specialized to evolve programs.
