@@ -1,4 +1,7 @@
 # genepro
+[![DOI](https://zenodo.org/badge/463139106.svg)](https://zenodo.org/badge/latestdoi/463139106)
+
+
 <figure>
 <img src="juniper_art.png" alt="art of a juniper, 'ginepro' in Italian" width=300px/>
 <figcaption>
@@ -6,7 +9,6 @@
 </figcaption>
 </figure>
 
-[![DOI](https://zenodo.org/badge/463139106.svg)](https://zenodo.org/badge/latestdoi/463139106)
 
 ## In brief
 
