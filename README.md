@@ -80,17 +80,9 @@ Obtained by the (simplified) model:
 The notebook [gym.ipynb](gym.ipynb) shows how `genepro` can be used to evolve a controller for the *CartPole-v1* environment of the OpenAI [gym](https://github.com/openai/gym) library.
 
 <figure>
-<img src="random_cartpole.gif" width=300px alt="animation displaying a random cart pole controller" style="float:left;margin-right:10px">
+<img src="rand_n_evolved_cartpole.gif" width=600px alt="animation displaying a random cart pole controller">
 <figcaption>
-<i>Behavior of a random controller.</i>
-</figcaption>
-<div style="clear:both;">
-
-</div>
-<img src="evolved_cartpole.gif" width=300px alt="animation displaying an evolved cart pole controller" style="float:left;margin-right:10px">
-
-<figcaption>
-<i>Behavior of the evolved cart pole (symbolic) controller:
+<i>Left: random cart pole controller; Right: evolved symbolic cart pole controller:
 
 (x2 + x3) * (x2*x3 + x3 + x4 + 1) * log(abs(x2))^2 * log(abs(x3))^2 < 0.5? 'left' else 'right' </i>
 </figcaption>
