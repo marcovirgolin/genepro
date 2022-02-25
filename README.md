@@ -83,3 +83,18 @@ The notebook [gym.ipynb](gym.ipynb) shows how `genepro` can be used to evolve a 
 (x2 + x3)*(x2*x3 + x3 + x4 + 1)*log(abs(x2))**2*log(abs(x3))**2</i>
 </figcaption>
 </figure>
+
+
+## Citation
+If you use this software, please cite it with:
+```
+@software{Virgolin_genepro_2022,
+  author = {Virgolin, Marco},
+  doi = {10.5281/zenodo.6258591},
+  month = {2},
+  title = {{genepro}},
+  url = {https://github.com/marcovirgolin/genepro},
+  version = {0.0.1},
+  year = {2022}
+}
+```
