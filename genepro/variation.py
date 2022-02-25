@@ -1,5 +1,3 @@
-from typing import Callable
-
 import numpy as np
 from numpy.random import random as randu
 from numpy.random import normal as randn

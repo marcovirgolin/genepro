@@ -1,7 +1,7 @@
 import numpy as np
 from copy import deepcopy
 
-def tournament_selection(contestants : list, num_to_select : int, tournament_size : int=4):
+def tournament_selection(contestants : list, num_to_select : int, tournament_size : int=4) -> list:
   """
   Performs tournament selection on the contestants until the given number of selected contestants is reached;
   note that `len(contestants)` needs to be a multiple of `tournament_size` and similarly for `num_to_select`

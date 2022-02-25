@@ -22,15 +22,26 @@ This new population is then used for the next generation.
 
 
 ## Installation
+To run, `genepro` relies only on a few libraries to run (`numpy`, `joblib`, and `scikit-learn`).
+However, additional libraries (e.g., `gym`) are required to run some examples.
+You can choose to perform a minimal or full installation.
+
 ### Minimal installation
 To perform a minimal installation, run:
 ```
+pip install genepro
+```
+
+### Full installation 
+For a full installation, clone this repo locally, and make use of the file [requirements.txt](requirements.txt), as follows:
+```
 git clone https://github.com/marcovirgolin/genepro
 cd genepro
-pip install .
+pip install -r requirements.txt .
 ```
-### Full installation with conda
-If you'd like to set up a conda environment that includes additional libraries to run the examples in the notebooks, run:
+
+### Wish to use conda?
+A conda virtual enviroment can easily be set up with:
 ```
 git clone https://github.com/marcovirgolin/genepro
 cd genepro

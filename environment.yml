@@ -6,10 +6,4 @@ dependencies:
   - imagemagick
   - pip=21.2.4 
   - pip:
-    - gym
-    - pygame
-    - pyglet
-    - matplotlib
-    - numpy
-    - scikit-learn
-    - sympy
+    - -r requirements.txt
