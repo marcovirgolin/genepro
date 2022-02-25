@@ -84,7 +84,9 @@ The notebook [gym.ipynb](gym.ipynb) shows how `genepro` can be used to evolve a 
 <figcaption>
 <i>Behavior of a random controller.</i>
 </figcaption>
-<div style="clear:both;"></div>
+<div style="clear:both;">
+
+</div>
 <img src="evolved_cartpole.gif" width=300px alt="animation displaying an evolved cart pole controller" style="float:left;margin-right:10px">
 
 <figcaption>
