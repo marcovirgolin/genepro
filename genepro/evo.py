@@ -131,7 +131,7 @@ class Evolution:
     self.best_of_gens = list()
 
 
-  def __must_terminate(self) -> bool:
+  def _must_terminate(self) -> bool:
     """
     Determines whether a termination criterion has been reached
 
@@ -177,14 +177,14 @@ class Evolution:
     self.best_of_gens.append(deepcopy(best))
 
     # generational loop
-    while not self.__must_terminate():
+    while not self._must_terminate():
       # select promising parents
       sel_fun = self.selection["fun"]
       parents = sel_fun(self.population, self.pop_size, **self.selection["kwargs"])
       # generate offspring
       offspring_population = Parallel(n_jobs=self.n_jobs)(delayed(generate_offspring)
         (t, self.crossovers, self.mutations, self.coeff_opts, 
-        randc(self.population), self.internal_nodes, self.leaf_nodes,
+        randc(parents), self.internal_nodes, self.leaf_nodes,
         constraints={"max_tree_size": self.max_tree_size}) 
         for t in parents)
 
