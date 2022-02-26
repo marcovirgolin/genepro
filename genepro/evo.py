@@ -202,4 +202,4 @@ class Evolution:
       self.best_of_gens.append(deepcopy(best))
       # log info
       if self.verbose:
-        print("gen: {},\tbest of gen fitness: {:.3f},\tbest of gen size: {}".format(self.num_gens, best.fitness, len(best.get_subtree())))
+        print("gen: {},\tbest of gen fitness: {:.3f},\tbest of gen size: {}".format(self.num_gens, best.fitness, len(best)))

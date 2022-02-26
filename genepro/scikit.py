@@ -58,7 +58,7 @@ class GeneProRegressor(GeneProEstimator):
 
     # create a fitness function
     def fitness_function(tree):
-      pred = tree.get_output(self.X_)
+      pred = tree(self.X_)
       if self.use_linear_scaling:
         slope = np.cov(self.y_, pred)[0,1] / (np.var(pred) + 1e-12)
         intercept = np.mean(self.y_) - slope*np.mean(pred)
@@ -78,10 +78,10 @@ class GeneProRegressor(GeneProEstimator):
       best = self.evo.best_of_gens[np.argmax([t.fitness for t in self.evo.best_of_gens])]
     else:
       best = self.evo.best_of_gens[-1]
-    pred = best.get_output(X)
+    pred = best(X)
     if self.use_linear_scaling:
       # compute linear scaling coefficients w.r.t. training set
-      pred_ = best.get_output(self.X_)
+      pred_ = best(self.X_)
       slope = np.cov(self.y_, pred_)[0,1] / (np.var(pred_) + 1e-12)
       intercept = np.mean(self.y_) - slope*np.mean(pred_)
       # update prediction with linear scaling coefficients
@@ -100,7 +100,7 @@ class GeneProClassifier(GeneProEstimator):
 
     # create a fitness function
     def fitness_function(tree):
-      out = tree.get_output(self.X_)
+      out = tree(self.X_)
       pred = np.where(out < 0, -1, 1)
       return self.score(self.y_, pred)
 
@@ -125,7 +125,7 @@ class GeneProClassifier(GeneProEstimator):
       best = self.evo.best_of_gens[np.argmax([t.fitness for t in self.evo.best_of_gens])]
     else:
       best = self.evo.best_of_gens[-1]
-    out = best.get_output(X)
+    out = best(X)
     pred = np.where(out < 0, -1, 1)
     pred = np.where(pred == -1, self.classes_[0], self.classes_[1])
 

@@ -38,6 +38,32 @@ class Node:
     """
     return self.symb
 
+  def __len__(self) -> int:
+    """
+    Returns the length of the subtree rooted at this node
+  
+    Returns
+    -------
+      length of the subtree rooted at this node
+    """
+    return len(self.get_subtree())
+
+  def __call__(self, X : np.ndarray) -> np.ndarray:
+    """
+    Shorthand for get_output
+
+    Parameters
+    ----------
+    X : np.ndarray
+      the input to be processed as an numpy ndarray with dimensions (num. observations, num. features)
+    
+    Returns
+    -------
+    np.ndarray
+      the output obtained by processing the input
+    """
+    return self.get_output(X)
+
   def get_subtree(self) -> list:
     """
     Returns the subtree rooted at this node, as a list of nodes visited in prefix order
