@@ -184,7 +184,7 @@ class Evolution:
       # generate offspring
       offspring_population = Parallel(n_jobs=self.n_jobs)(delayed(generate_offspring)
         (t, self.crossovers, self.mutations, self.coeff_opts, 
-        randc(parents), self.internal_nodes, self.leaf_nodes,
+        parents, self.internal_nodes, self.leaf_nodes,
         constraints={"max_tree_size": self.max_tree_size}) 
         for t in parents)
 

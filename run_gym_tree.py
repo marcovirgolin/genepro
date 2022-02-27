@@ -22,13 +22,12 @@ frames = list()
 
 def fitness_function(tree, num_episodes=5, episode_duration=500, render=False, ignore_done=False):
   rewards = list()
-  durations = list()
   for _ in range(num_episodes):
     # get initial state
     observation = env.reset()
     # we do not have an action at time -1, let's set it randomly
     action = env.action_space.sample()
-    for t in range(episode_duration):
+    for _ in range(episode_duration):
       if render:
         frames.append(env.render(mode="rgb_array"))
       # build up the input sample for GP
@@ -40,8 +39,6 @@ def fitness_function(tree, num_episodes=5, episode_duration=500, render=False, i
       rewards.append(reward)
       if done and not ignore_done:
         break
-    # keep track of how long this lasted
-    durations.append(t)
 
   # compute and return fitness
   fitness = np.sum(rewards)

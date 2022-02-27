@@ -53,7 +53,7 @@ def subtree_crossover(tree : Node, donor : Node, unif_depth : int=True) -> Node:
   tree : Node
     the tree that participates and is modified by crossover
   donor : Node
-    a second tree that provides a subtree for crossover
+    the second tree that participates in crossover, it provides candidate subtrees
   unif_depth : bool, optional
     whether uniform random depth sampling is used to pick the root of the subtrees to swap (default is True)
 
@@ -76,6 +76,74 @@ def subtree_crossover(tree : Node, donor : Node, unif_depth : int=True) -> Node:
   else:
     tree = m
   return tree
+
+def node_level_crossover(tree : Node, donor : Node, same_depth : bool=False, prob_swap : float=0.1) -> Node:
+  """
+  Performs crossover at the level of single nodes
+
+  Parameters
+  ----------
+  tree : Node
+    the tree that participates and is modified by crossover
+  donor : Node
+    the second tree for crossover, which provides candidate nodes
+  same_depth : bool, optional
+    whether node-level swaps should occur only between nodes at the same depth level (default is False)
+  prob_swap : float, optional
+    the probability of swapping a node in tree with one in donor (default is 0.1)
+
+  Returns
+  -------
+  Node
+    the tree after crossover 
+  """
+  nodes = tree.get_subtree()
+  donor_nodes = donor.get_subtree()
+
+  donor_node_arity = dict()
+  donor_node_arity_n_depth = dict()
+  for n in donor_nodes:
+    arity = n.arity
+    if arity not in donor_node_arity:
+      donor_node_arity[arity] = [n]
+    else:
+      donor_node_arity[arity].append(n)
+    # also record depths if same_depth==True
+    if same_depth:
+      depth = n.get_depth()
+      ar_n_dep = (arity, depth)
+      if ar_n_dep not in donor_node_arity_n_depth:
+        donor_node_arity_n_depth[ar_n_dep] = [n]
+      else:
+        donor_node_arity_n_depth[ar_n_dep].append(n)
+
+  for n in nodes:
+    if randu() < prob_swap:
+      # find compatible donor
+      arity = n.arity
+      if same_depth:
+        depth = n.get_depth()
+        compatible_nodes = donor_node_arity_n_depth[(arity,depth)] if (arity,depth) in donor_node_arity_n_depth else None
+      else:
+        compatible_nodes = donor_node_arity[arity] if arity in donor_node_arity else None
+      # if no compatible nodes, skip
+      if compatible_nodes is None or len(compatible_nodes) == 0:
+        continue
+      # swap
+      m = deepcopy(randc(compatible_nodes))
+      m.parent = None
+      m._children = list()
+      p = n.parent
+      if p:
+        i = p.detach_child(n)
+        p.insert_child(m,i)
+      else:
+        tree = m
+      for c in n._children:
+        m.insert_child(c)
+  
+  return tree
+
 
 def subtree_mutation(tree : Node, internal_nodes : list, leaf_nodes : list, 
   unif_depth : bool=True, max_depth : int=4, prob_leaf : float=0.25) -> Node:
@@ -189,7 +257,7 @@ def __sample_uniform_depth_nodes(nodes : list) -> list:
 
 def generate_offspring(parent : Node, 
   crossovers : list, mutations : list, coeff_opts : list,
-  donor : Node, internal_nodes : list, leaf_nodes : list,
+  donors : list, internal_nodes : list, leaf_nodes : list,
   constraints : dict={"max_tree_size": 100}) -> Node:
   """
   Generates an offspring from a given parent (possibly using a donor from the population for crossover).
@@ -206,8 +274,8 @@ def generate_offspring(parent : Node,
     list of dictionaries each specifying a type of mutation and respective hyper-parameters
   coeff_opts : list
     list of dictionaries each specifying a type of coefficient optimization and respective hyper-parameters
-  donor : Node
-    a donor tree that is used by crossover
+  donors : list
+    list of Node, each representing a donor tree that can be used by crossover
   internal_nodes : list
     list of internal nodes to be used by mutation
   leaf_nodes : list
@@ -233,7 +301,7 @@ def generate_offspring(parent : Node,
     var_op = all_var_ops[i]
     offspring = __undergo_variation_operator(var_op, offspring, 
       crossovers, mutations, coeff_opts,
-      donor, internal_nodes, leaf_nodes)
+      randc(donors), internal_nodes, leaf_nodes)
     # check offspring meets constraints, else revert to backup
     if not __check_tree_meets_all_constraints(offspring, constraints):
       # revert to backup
