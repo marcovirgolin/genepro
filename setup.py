@@ -5,7 +5,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name='genepro',
-    version='0.0.6',
+    version='0.0.7',
     author='Marco Virgolin',
     author_email='marco.virgolin@cwi.nl',
     url='https://github.com/marcovirgolin/genepro',

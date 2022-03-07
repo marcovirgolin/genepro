@@ -149,17 +149,10 @@ class Evolution:
       return True
     return False
 
-
-  def evolve(self):
+  def _initialize_population(self):
     """
-    Runs the evolution until a termination criterion is met;
-    first, a random population is initialized, second the generational loop is started:
-    every generation, promising parents are selected, offspring are generated from those parents, 
-    and the offspring population is used to form the population for the next generation
+    Generates a random initial population and evaluates it
     """
-    # set the start time
-    self.start_time = time.time()
-
     # initialize the population
     self.population = Parallel(n_jobs=self.n_jobs)(
         delayed(generate_random_tree)(
@@ -176,30 +169,51 @@ class Evolution:
     best = self.population[np.argmax([t.fitness for t in self.population])]
     self.best_of_gens.append(deepcopy(best))
 
+  def _perform_generation(self):
+    """
+    Performs one generation, which consists of parent selection, offspring generation, and fitness evaluation
+    """
+    # select promising parents
+    sel_fun = self.selection["fun"]
+    parents = sel_fun(self.population, self.pop_size, **self.selection["kwargs"])
+    # generate offspring
+    offspring_population = Parallel(n_jobs=self.n_jobs)(delayed(generate_offspring)
+      (t, self.crossovers, self.mutations, self.coeff_opts, 
+      parents, self.internal_nodes, self.leaf_nodes,
+      constraints={"max_tree_size": self.max_tree_size}) 
+      for t in parents)
+
+    # evaluate each offspring and store its fitness 
+    fitnesses = Parallel(n_jobs=self.n_jobs)(delayed(self.fitness_function)(t) for t in offspring_population)
+    for i in range(self.pop_size):
+      offspring_population[i].fitness = fitnesses[i]
+    # store cost
+    self.num_evals += self.pop_size
+    # update the population for the next iteration
+    self.population = offspring_population
+    # update info
+    self.num_gens += 1
+    best = self.population[np.argmax([t.fitness for t in self.population])]
+    self.best_of_gens.append(deepcopy(best))
+
+  def evolve(self):
+    """
+    Runs the evolution until a termination criterion is met;
+    first, a random population is initialized, second the generational loop is started:
+    every generation, promising parents are selected, offspring are generated from those parents, 
+    and the offspring population is used to form the population for the next generation
+    """
+    # set the start time
+    self.start_time = time.time()
+
+    self._initialize_population()
+
     # generational loop
     while not self._must_terminate():
-      # select promising parents
-      sel_fun = self.selection["fun"]
-      parents = sel_fun(self.population, self.pop_size, **self.selection["kwargs"])
-      # generate offspring
-      offspring_population = Parallel(n_jobs=self.n_jobs)(delayed(generate_offspring)
-        (t, self.crossovers, self.mutations, self.coeff_opts, 
-        parents, self.internal_nodes, self.leaf_nodes,
-        constraints={"max_tree_size": self.max_tree_size}) 
-        for t in parents)
-
-      # evaluate each offspring and store its fitness 
-      fitnesses = Parallel(n_jobs=self.n_jobs)(delayed(self.fitness_function)(t) for t in offspring_population)
-      for i in range(self.pop_size):
-        offspring_population[i].fitness = fitnesses[i]
-      # store cost
-      self.num_evals += self.pop_size
-      # update the population for the next iteration
-      self.population = offspring_population
-      # update info
-      self.num_gens += 1
-      best = self.population[np.argmax([t.fitness for t in self.population])]
-      self.best_of_gens.append(deepcopy(best))
+      # perform one generation
+      self._perform_generation()
       # log info
       if self.verbose:
-        print("gen: {},\tbest of gen fitness: {:.3f},\tbest of gen size: {}".format(self.num_gens, best.fitness, len(best)))
+        print("gen: {},\tbest of gen fitness: {:.3f},\tbest of gen size: {}".format(
+            self.num_gens, self.best_of_gens[-1].fitness, len(self.best_of_gens[-1])
+            ))

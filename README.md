@@ -99,7 +99,7 @@ If you use this software, please cite it with:
   month = {2},
   title = {{genepro}},
   url = {https://github.com/marcovirgolin/genepro},
-  version = {0.0.6},
+  version = {0.0.7},
   year = {2022}
 }
 ```
