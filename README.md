@@ -95,7 +95,7 @@ If you use this software, please cite it with:
 ```
 @software{Virgolin_genepro_2022,
   author = {Virgolin, Marco},
-  doi = {10.5281/zenodo.6291088},
+  doi = {10.5281/zenodo.6335294},
   month = {2},
   title = {{genepro}},
   url = {https://github.com/marcovirgolin/genepro},
