@@ -77,7 +77,7 @@ Obtained by the (simplified) model:
 *Example of output of a symbolic regression model discovered for the [Diabetes data set](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_diabetes.html)*.
 
 <figure>
-<img src="srfit.gif" width=600px alt="animation of genepro finding a symbolic regression solution">
+<img src="srfit.gif" width=400px alt="animation of genepro finding a symbolic regression solution">
 <figcaption>
 <i>
 Example of 1D symbolic regression (made with <a href="https://gist.github.com/marcovirgolin/a83bb6e8fd634f9017586ab0c1605147">this gist</a>)
