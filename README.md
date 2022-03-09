@@ -76,6 +76,15 @@ Obtained by the (simplified) model:
 ```
 *Example of output of a symbolic regression model discovered for the [Diabetes data set](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_diabetes.html)*.
 
+<figure>
+<img src="srfit.gif" width=600px alt="animation of genepro finding a symbolic regression solution">
+<figcaption>
+<i>
+Example of 1D symbolic regression (made with <a href="https://gist.github.com/marcovirgolin/a83bb6e8fd634f9017586ab0c1605147">this gist</a>)
+</i>
+</figcaption>
+</figure>
+
 ### Reinforcement learning
 The notebook [gym.ipynb](gym.ipynb) shows how `genepro` can be used to evolve a controller for the *CartPole-v1* environment of the OpenAI [gym](https://github.com/openai/gym) library.
 
@@ -86,7 +95,6 @@ The notebook [gym.ipynb](gym.ipynb) shows how `genepro` can be used to evolve a 
 
 (x2 + x3) * (x2*x3 + x3 + x4 + 1) * log(abs(x2))^2 * log(abs(x3))^2 < 0.5? 'left' else 'right' </i>
 </figcaption>
-<div style="clear:both"></div>
 </figure>
 
 
