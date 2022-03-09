@@ -23,7 +23,14 @@ Genetic programming operates on a population of trees, typically initialized at 
 Every iteration (called *generation*), promising trees undergo random modifications (e.g., forms of *crossover*, *mutation*, and *tuning*) that result in a population of offspring trees.
 This new population is then used for the next generation.
 
-
+<figure>
+<img src="srfit.gif" width=400px alt="animation of genepro finding a symbolic regression solution">
+<figcaption>
+<i>
+Example of 1D symbolic regression (made with <a href="https://gist.github.com/marcovirgolin/a83bb6e8fd634f9017586ab0c1605147">this gist</a>)
+</i>
+</figcaption>
+</figure>
 
 ## Installation
 To run, `genepro` relies only on a few libraries to run (`numpy`, `joblib`, and `scikit-learn`).
@@ -76,14 +83,6 @@ Obtained by the (simplified) model:
 ```
 *Example of output of a symbolic regression model discovered for the [Diabetes data set](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_diabetes.html)*.
 
-<figure>
-<img src="srfit.gif" width=400px alt="animation of genepro finding a symbolic regression solution">
-<figcaption>
-<i>
-Example of 1D symbolic regression (made with <a href="https://gist.github.com/marcovirgolin/a83bb6e8fd634f9017586ab0c1605147">this gist</a>)
-</i>
-</figcaption>
-</figure>
 
 ### Reinforcement learning
 The notebook [gym.ipynb](gym.ipynb) shows how `genepro` can be used to evolve a controller for the *CartPole-v1* environment of the OpenAI [gym](https://github.com/openai/gym) library.
