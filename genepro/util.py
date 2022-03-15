@@ -1,9 +1,32 @@
 import inspect
 from copy import deepcopy
+import numpy as np
 
 from genepro.node import Node
 from genepro import node_impl
 from genepro.node_impl import Feature, Constant
+
+
+def compute_linear_scaling(y,p):
+  """
+  Computes the optimal slope and intercept that realize the affine transformation that minimizes the mean-squared-error between the label and the prediction.
+  See the paper: https://doi:10.1023/B:GENP.0000030195.77571.f9
+
+  Parameters
+  ----------
+  y : np.array
+    the label values
+  p : np.array
+    the respective predictions
+
+  Returns
+  -------
+  float, float
+    slope and intercept that represent 
+  """
+  slope = np.cov(y, p)[0,1] / (np.var(p) + 1e-12)
+  intercept = np.mean(y) - slope*np.mean(p)
+  return slope, intercept
 
 
 def tree_from_prefix_repr(prefix_repr : str) -> Node:
