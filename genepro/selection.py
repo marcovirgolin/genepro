@@ -27,7 +27,7 @@ def tournament_selection(contestants : list, num_to_select : int, tournament_siz
   num_parses = num_to_select // num_selected_per_parse
 
   # assert quantities are compatible
-  assert n / tournament_size == num_selected_per_parse
+  assert n / tournament_size == num_selected_per_parse, "Number of contestants {} is not a multiple of tournament size {}".format(n,tournament_size)
   assert num_to_select / num_selected_per_parse == num_parses
  
   for _ in range(num_parses):
