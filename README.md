@@ -71,15 +71,12 @@ The notebook [classification and regression.ipynb](<classification and regressio
 These estimators are intended for data sets with a small number of (relevant) features, as the evolved program can be written as a compact (and potentially **interpretable**) symbolic expression.
 
 
-
 ```
 ...
-gen: 38,	best of gen fitness: -3010.345,	best of gen size: 43
-gen: 39,	best of gen fitness: -2998.565,	best of gen size: 43
-gen: 40,	best of gen fitness: -2986.394,	best of gen size: 45
-The negative mean squared error on the test set is -2757.157 (respective R^2 score is 0.546)
-Obtained by the (simplified) model: 
-5*x2 + 3*x3 - x6 + 3*x8 + log(abs(x9)) + log(abs(2*x2 + x8 + 1.44)) - 9.266
+gen: 39,	best of gen fitness: -2952.999,	best of gen size: 46
+gen: 40,	best of gen fitness: -2950.453,	best of gen size: 44
+The mean squared error on the test set is 2964.646 (respective R^2 score is 0.512)
+Obtained by the (simplified) model: 146.527 + -5.797*(-x_2**2 - 4*x_2 - 3*x_3 + 2*x_4 - x_5 - x_6*(x_4 - x_5) + x_6 - 5*x_8)
 ```
 *Example of output of a symbolic regression model discovered for the [Diabetes data set](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_diabetes.html)*.
 
@@ -106,7 +103,7 @@ If you use this software, please cite it with:
   month = {2},
   title = {{genepro}},
   url = {https://github.com/marcovirgolin/genepro},
-  version = {0.0.7},
+  version = {0.0.8},
   year = {2022}
 }
 ```

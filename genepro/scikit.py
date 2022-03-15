@@ -1,26 +1,34 @@
 import numpy as np
 from sklearn.base import BaseEstimator
+from sklearn.metrics import balanced_accuracy_score, mean_squared_error
 from sklearn.utils.validation import check_X_y, check_array, check_is_fitted
 from sklearn.utils.multiclass import unique_labels
 
 from genepro.evo import Evolution
-from genepro.node_impl import Feature, Constant
+from genepro.node_impl import *
+from genepro.util import compute_linear_scaling
 
 class GeneProEstimator(BaseEstimator):
   def __init__(self,
-    score,
-    internal_nodes,
-    leaf_nodes=None,
+    score=None,
     evo_kwargs=dict(),
     ):
 
     self.score = score
 
+    # set up default internal nodes if not provided
+    if "internal_nodes" not in evo_kwargs:
+      evo_kwargs["internal_nodes"] = [Plus(), Minus(), Times(), Div(), Square()]
+    # default leaf nodes can only be set at fitting time (when we know X)
+    # hence, initially set to none here, will be set when calling .fit(X,y)
+    if "leaf_nodes" not in evo_kwargs:
+      evo_kwargs["leaf_nodes"] = None
+
     self.evo = Evolution(
-      None,
-      internal_nodes, leaf_nodes, **evo_kwargs
+      fitness_function=self.score,
+      **evo_kwargs
     )
-  
+
   def fit(self, X, y):
     # check that X and y have correct shape
     X, y = check_X_y(X, y)
@@ -46,13 +54,17 @@ class GeneProEstimator(BaseEstimator):
 
 class GeneProRegressor(GeneProEstimator):
   def __init__(self,
-    score,
-    internal_nodes,
-    leaf_nodes=None,
+    score=None,
     use_linear_scaling=True,
     evo_kwargs=dict(),
     ):
-    super(GeneProRegressor,self).__init__(score, internal_nodes, leaf_nodes, evo_kwargs)
+    super(GeneProRegressor,self).__init__(score, evo_kwargs)
+
+    # set score to default if not provided
+    if score is None:
+      def neg_mse(y, p):
+        return -mean_squared_error(y, p)
+      self.score = neg_mse
 
     self.use_linear_scaling = use_linear_scaling
 
@@ -60,8 +72,7 @@ class GeneProRegressor(GeneProEstimator):
     def fitness_function(tree):
       pred = tree(self.X_)
       if self.use_linear_scaling:
-        slope = np.cov(self.y_, pred)[0,1] / (np.var(pred) + 1e-12)
-        intercept = np.mean(self.y_) - slope*np.mean(pred)
+        slope, intercept = compute_linear_scaling(self.y_, pred)
         pred = intercept + slope*pred
       return self.score(self.y_, pred)
 
@@ -91,12 +102,14 @@ class GeneProRegressor(GeneProEstimator):
 
 class GeneProClassifier(GeneProEstimator):
   def __init__(self,
-    score,
-    internal_nodes,
-    leaf_nodes=None,
+    score=None,
     evo_kwargs=dict(),
     ):
-    super(GeneProClassifier,self).__init__(score, internal_nodes, leaf_nodes, evo_kwargs)
+    super(GeneProClassifier,self).__init__(score, evo_kwargs)
+
+    # set score to default if not provided
+    if score is None:
+      self.score = balanced_accuracy_score
 
     # create a fitness function
     def fitness_function(tree):
