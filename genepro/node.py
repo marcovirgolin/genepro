@@ -223,7 +223,7 @@ class Node:
     ----------
     args : list
       list of strings, each representing the way a child node processes its input arguments
-    name : str, options are "between" and "before"
+    name : str, options are "between", "before", and "after"
       name of the typical representation, needs to match with the length of args (e.g., "between" for Plus results in "args[0] + args[1]")
     
     Returns
@@ -241,6 +241,15 @@ class Node:
         repr += arg + ','
       repr = repr[:-1] + ')'
       return repr
+    elif name == 'after':
+      repr = '('
+      for arg in args:
+        repr += arg + ','
+      repr = repr[:-1] + ')'
+      repr += self.symb
+      return repr
+    else:
+      raise ValueError("Unrecognized option {}".format(name))
   
   def __get_subtree_recursive(self, subtree : list):
     """
