@@ -1,6 +1,4 @@
 # genepro
-[![DOI](https://zenodo.org/badge/463139106.svg)](https://zenodo.org/badge/latestdoi/463139106)
-
 
 <figure>
 <img src="juniper_art.png" alt="art of a juniper, 'ginepro' in Italian" width=300px/>
@@ -99,8 +97,7 @@ If you use this software, please cite it with:
 ```
 @software{Virgolin_genepro_2022,
   author = {Virgolin, Marco},
-  doi = {10.5281/zenodo.6335294},
-  month = {2},
+  month = {3},
   title = {{genepro}},
   url = {https://github.com/marcovirgolin/genepro},
   version = {0.0.8},
