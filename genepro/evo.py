@@ -97,7 +97,7 @@ class Evolution:
     max_tree_size : int=64,
     crossovers : list=[{"fun":subtree_crossover, "rate": 0.75}],
     mutations : list= [{"fun":subtree_mutation, "rate": 0.75}],
-    coeff_opts : list = [{"fun":coeff_mutation, "rate": 1.0}],
+    coeff_opts : list = [{"fun":coeff_mutation, "rate": 0.75}],
     selection : dict={"fun":tournament_selection,"kwargs":{"tournament_size":4}},
     # termination criteria
     max_evals : int=None,
