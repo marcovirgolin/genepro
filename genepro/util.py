@@ -54,7 +54,7 @@ def __tree_from_symb_list_recursive(symb_list : list, possible_nodes : list):
   symb = symb_list[0]
   symb_list = symb_list[1:]
   # check if it is a feature
-  if symb.startswith("x"):
+  if symb.startswith("x_"):
     id = int(symb[1:])
     n = Feature(id)
     return n, symb_list
