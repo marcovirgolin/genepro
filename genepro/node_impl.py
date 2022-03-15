@@ -225,7 +225,7 @@ class Constant(Node):
     super(Constant,self).__init__()
     self.arity = 0
     self.__value = value
-    self.symb = str(value)
+    self.symb = str(value) if value is not None else "const?"
 
   def get_value(self):
     if not self.__value:
