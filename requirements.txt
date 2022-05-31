@@ -1,8 +1,8 @@
 gym == 0.22.0
-pygame == 2.1.2
+pygame == 2.1.0
 pyglet == 1.5.21
 matplotlib >= 3.5.1
-numpy >= 1.22.2
+numpy >= 1.21.0
 scikit-learn >= 1.0.2
 sympy >= 1.9
 joblib >= 1.1.0
