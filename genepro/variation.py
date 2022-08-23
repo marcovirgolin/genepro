@@ -317,7 +317,7 @@ def __undergo_variation_operator(var_op : dict, offspring : Node,
   crossovers, mutations, coeff_opts,
   donor, internal_nodes, leaf_nodes) -> Node:
   # decide whether to actually do something
-  if var_op["rate"] > randu():
+  if var_op["rate"] < randu():
     # nope
     return offspring
 
