@@ -5,7 +5,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name='genepro',
-    version='0.0.8',
+    version='0.0.9',
     author='Marco Virgolin',
     author_email='marco.virgolin@cwi.nl',
     url='https://github.com/marcovirgolin/genepro',
@@ -23,5 +23,5 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.9',
+    python_requires='>=3.7',
 )
