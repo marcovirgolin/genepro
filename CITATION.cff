@@ -5,6 +5,6 @@ authors:
   given-names: "Marco"
   orcid: "https://orcid.org/0000-0001-8905-9313"
 title: "genepro"
-version: 0.0.6
-date-released: 2022-02-26
+version: 0.1.0
+date-released: 2022-09-01
 url: "https://github.com/marcovirgolin/genepro"
