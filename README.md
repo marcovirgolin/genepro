@@ -97,10 +97,10 @@ If you use this software, please cite it with:
 ```
 @software{Virgolin_genepro_2022,
   author = {Virgolin, Marco},
-  month = {3},
+  month = {9},
   title = {{genepro}},
   url = {https://github.com/marcovirgolin/genepro},
-  version = {0.0.8},
+  version = {0.1.0},
   year = {2022}
 }
 ```
