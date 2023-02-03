@@ -8,6 +8,8 @@ from genepro.evo import Evolution
 from genepro.node_impl import *
 from genepro.util import compute_linear_scaling
 
+import numexpr as ne
+
 class GeneProEstimator(BaseEstimator):
   def __init__(self,
     score=None,
@@ -36,6 +38,8 @@ class GeneProEstimator(BaseEstimator):
     self.X_ = X
     self.y_ = y
 
+    self.ne_X_ = self.get_ne_data(self.X_)
+
     # default generation of leaf nodes
     if not self.evo.leaf_nodes:
       self.evo.leaf_nodes = [Feature(i) for i in range(X.shape[1])] + [Constant()]
@@ -51,6 +55,12 @@ class GeneProEstimator(BaseEstimator):
 
     pass
 
+  def get_ne_data(self, X):
+    ne_dataset = dict()
+    for d in range(X.shape[1]):
+      ne_dataset["x_"+str(d)] = X[:,d]
+    return ne_dataset
+
 
 class GeneProRegressor(GeneProEstimator):
   def __init__(self,
@@ -63,6 +73,8 @@ class GeneProRegressor(GeneProEstimator):
     # set score to default if not provided
     if score is None:
       def neg_mse(y, p):
+        if np.isnan(p).any() or np.isinf(p).any():
+          return -np.inf
         return -mean_squared_error(y, p)
       self.score = neg_mse
 
@@ -70,7 +82,9 @@ class GeneProRegressor(GeneProEstimator):
 
     # create a fitness function
     def fitness_function(tree):
-      pred = tree(self.X_)
+      pred = ne.evaluate(tree.get_readable_repr(), self.ne_X_)
+      if pred.shape != self.y_.shape: # constant
+        pred = np.full(self.y_.shape, pred)
       if self.use_linear_scaling:
         slope, intercept = compute_linear_scaling(self.y_, pred)
         pred = intercept + slope*pred
@@ -89,7 +103,8 @@ class GeneProRegressor(GeneProEstimator):
       best = self.evo.best_of_gens[np.argmax([t.fitness for t in self.evo.best_of_gens])]
     else:
       best = self.evo.best_of_gens[-1]
-    pred = best(X)
+    #pred = best(X)
+    pred = ne.evaluate(best.get_readable_repr(), self.get_ne_data(X))
     if self.use_linear_scaling:
       # compute linear scaling coefficients w.r.t. training set
       pred_ = best(self.X_)
@@ -113,7 +128,12 @@ class GeneProClassifier(GeneProEstimator):
 
     # create a fitness function
     def fitness_function(tree):
-      out = tree(self.X_)
+      #out = tree(self.X_)
+      out = ne.evaluate(tree.get_readable_repr(), self.ne_X_)
+      if out.shape != self.y_.shape: # constant
+        out = np.full(self.y_.shape, out)
+      if np.isnan(out).any() or np.isinf(out).any():
+        return -np.inf
       pred = np.where(out < 0, -1, 1)
       return self.score(self.y_, pred)
 
@@ -138,7 +158,8 @@ class GeneProClassifier(GeneProEstimator):
       best = self.evo.best_of_gens[np.argmax([t.fitness for t in self.evo.best_of_gens])]
     else:
       best = self.evo.best_of_gens[-1]
-    out = best(X)
+    #out = best(X)
+    out = ne.evaluate(best.get_readable_repr(), self.get_ne_data(X))
     pred = np.where(out < 0, -1, 1)
     pred = np.where(pred == -1, self.classes_[0], self.classes_[1])
 
