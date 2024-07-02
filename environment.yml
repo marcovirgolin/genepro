@@ -2,6 +2,7 @@ name: genepro
 channels:
   - conda-forge
 dependencies:
+  - python=3.10
   - ipykernel
   - imagemagick
   - pip=21.2.4 

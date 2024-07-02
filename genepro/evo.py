@@ -96,7 +96,10 @@ class Evolution:
     init_max_depth : int=4,
     max_tree_size : int=64,
     crossovers : list=[{"fun":subtree_crossover, "rate": 0.5}],
-    mutations : list= [{"fun":subtree_mutation, "rate": 0.5}],
+    mutations : list= [
+      {"fun":subtree_mutation, "rate": 0.5},
+      {"fun":one_point_mutation, "rate": 0.5},
+    ],
     coeff_opts : list = [{"fun":coeff_mutation, "rate": 0.5}],
     selection : dict={"fun":tournament_selection,"kwargs":{"tournament_size":8}},
     # termination criteria

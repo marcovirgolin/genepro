@@ -153,7 +153,7 @@ def subtree_mutation(tree : Node, internal_nodes : list, leaf_nodes : list,
   Parameters
   ----------
   tree : Node
-    the tree that participates and is modified by crossover
+    the tree that undergoes mutation
   internal_nodes : list
     list of possible internal nodes to generate the mutated branch
   leaf_nodes : list
@@ -169,6 +169,68 @@ def subtree_mutation(tree : Node, internal_nodes : list, leaf_nodes : list,
   Node
     the tree after mutation (warning: replace the original tree with the returned one to avoid undefined behavior)
   """
+  # pick a subtree to replace
+  n = __sample_node(tree, unif_depth)
+  # generate a random branch
+  branch = generate_random_tree(internal_nodes, leaf_nodes, max_depth, prob_leaf)
+  # swap
+  p = n.parent
+  if p:
+    i = p.detach_child(n)
+    p.insert_child(branch,i)
+  else:
+    tree = branch
+  return tree
+
+def one_point_mutation(tree : Node, internal_nodes : list, leaf_nodes : list) -> Node:
+  """
+  Performs one-point mutation and returns the resulting offspring
+
+  Parameters
+  ----------
+  tree : Node
+    the tree that undergoes mutation
+  internal_nodes : list
+    list of possible internal nodes for replacing existing nodes
+  leaf_nodes : list
+    list of possible leaf nodes for replacing existing nodes
+  Returns
+  -------
+  Node
+    the tree after mutation (warning: replace the original tree with the returned one to avoid undefined behavior)
+  """
+  nodes = tree.get_subtree()
+  prob_mutation = 1.0 / len(nodes)
+  
+  for n in tree.get_subtree():
+    
+    if randu() < prob_mutation:
+      # get arity of current node, and check if leaf or not
+      arity = n.arity
+      is_leaf = arity == 0
+      # pick a new node with the same arity
+      if is_leaf:
+        new_node = randc(leaf_nodes)
+      else:
+        possible_nodes = [m for m in internal_nodes if m.arity == arity]
+        new_node = randc(possible_nodes)
+
+      # attach children
+      for c in n._children:
+        new_node.insert_child(c)
+      
+      # link to parent
+      p = n.parent
+      if p:
+        i = p.detach_child(n)
+        p.insert_child(new_node,i)
+      else:
+        tree = new_node
+
+    return tree
+      
+      
+  
   # pick a subtree to replace
   n = __sample_node(tree, unif_depth)
   # generate a random branch
