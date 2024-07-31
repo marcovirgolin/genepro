@@ -210,10 +210,10 @@ def one_point_mutation(tree : Node, internal_nodes : list, leaf_nodes : list) ->
       is_leaf = arity == 0
       # pick a new node with the same arity
       if is_leaf:
-        new_node = randc(leaf_nodes)
+        new_node = deepcopy(randc(leaf_nodes))
       else:
         possible_nodes = [m for m in internal_nodes if m.arity == arity]
-        new_node = randc(possible_nodes)
+        new_node = deepcopy(randc(possible_nodes))
 
       # attach children
       for c in n._children:
